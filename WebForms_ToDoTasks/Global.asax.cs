@@ -16,6 +16,18 @@ namespace WebForms_ToDoTasks
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            // Add Routes.
+            RegisterCustomRoutes(RouteTable.Routes);
+        }
+
+        void RegisterCustomRoutes(RouteCollection routes)
+        {
+            //routes.MapPageRoute(
+            //    "ProductsByCategoryRoute",
+            //    "Category/{categoryName}",
+            //    "~/Default.aspx"
+            //);
+           
         }
     }
 }
