@@ -7,41 +7,55 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebForms_ToDoTasks.Controllers;
+using WebForms_ToDoTasks.DataAccess;
+using WebForms_ToDoTasks.Models;
 
 namespace WebForms_ToDoTasks.Views
 {
     public partial class ToDoTasks : System.Web.UI.Page
     {
+        private IRepository<ToDoTask> repo;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            repo = new ToDoTasksRepository();
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void GridView1_UpdateItem(int id)
         {
-            //ToDoTasksController taskController = new ToDoTasksController();
-            //taskController.Create();
-            Response.Redirect("ToDoTaskAdd.aspx");
+            //ToDoTasksController taskController = new ToDoTasksController(repo);
+            //taskController.UpdateToDoTask(id);
 
-            //using (OracleConnection connection = new OracleConnection(
-            //        "DATA SOURCE=localhost:1521/XE;PASSWORD=123;PERSIST SECURITY INFO=True;USER ID=KATETO"))
-            //{
-            //    connection.Open();
-            //    OracleCommand insertCommand =
-            //        new OracleCommand("INSERT INTO Task (id, NAME, description, categoryid, status, TODODATE) VALUES (:0, :1, :2, :3, :4, :5)", connection);
-            //    insertCommand.Parameters.Add(new OracleParameter("0", 5));
-            //    insertCommand.Parameters.Add(new OracleParameter("1", "kat"));
-            //    insertCommand.Parameters.Add(new OracleParameter("2", " more test from VS"));
-            //    insertCommand.Parameters.Add(new OracleParameter("3", 1));
-            //    insertCommand.Parameters.Add(new OracleParameter("4", "0"));
-            //    insertCommand.Parameters.Add(new OracleParameter("5", DateTime.Now));
-            //    insertCommand.ExecuteNonQuery();
-            //    connection.Close();
+            var item = new WebForms_ToDoTasks.Models.ToDoTask();
+            TryUpdateModel(item);
+            if (ModelState.IsValid)
+            {
+                ToDoTasksController taskController = new ToDoTasksController(repo);
+                taskController.UpdateToDoTask(item);
 
-            //}
+                // Save changes here
 
-            //SqlCommand command = new SqlCommand("SELECT * FROM TableName WHERE FirstColumn = @0", conn);
+            }
+        }
 
+        // The id parameter name should match the DataKeyNames value set on the control
+        public void GridView1_DeleteItem(int id)
+        {
+            ToDoTasksController taskController = new ToDoTasksController(repo);
+            taskController.DeleteToDoTask(id);
+        }
+
+        // The return type can be changed to IEnumerable, however to support
+        // paging and sorting, the following parameters must be added:
+        //     int maximumRows
+        //     int startRowIndex
+        //     out int totalRowCount
+        //     string sortByExpression
+        public IEnumerable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
+        {
+            ToDoTasksController taskController = new ToDoTasksController(repo);
+            return taskController.Get();
         }
     }
 }
