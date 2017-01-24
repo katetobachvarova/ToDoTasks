@@ -13,13 +13,13 @@ namespace WebForms_ToDoTasks.Views {
     public partial class ToDoTasks {
         
         /// <summary>
-        /// Button1 control.
+        /// SearchByDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
+        protected global::System.Web.UI.WebControls.Button SearchByDescription;
         
         /// <summary>
         /// SerchByDescriptionTextBox control.
@@ -29,6 +29,33 @@ namespace WebForms_ToDoTasks.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox SerchByDescriptionTextBox;
+        
+        /// <summary>
+        /// SearchByDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SearchByDate;
+        
+        /// <summary>
+        /// SearchByDateTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SearchByDateTextBox;
+        
+        /// <summary>
+        /// lblNoResultMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNoResultMessage;
         
         /// <summary>
         /// GridView1 control.

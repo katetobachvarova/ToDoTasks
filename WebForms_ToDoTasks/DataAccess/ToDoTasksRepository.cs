@@ -54,6 +54,10 @@ namespace WebForms_ToDoTasks.DataAccess
         {
             return FindToDoTaskByDescription(description);
         }
+        public IQueryable<ToDoTask> GetByDate(string date)
+        {
+            return FindToDoTaskByDate(date);
+        }
         #endregion
 
         #region private methods
@@ -193,6 +197,37 @@ namespace WebForms_ToDoTasks.DataAccess
             if (string.IsNullOrWhiteSpace(description)) return null;
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
             string queryString =(string.Format(@"SELECT * FROM Task where DESCRIPTION LIKE '%{0}%'", description));
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(db.connectionString))
+                {
+                    OracleCommand command = new OracleCommand(queryString, connection);
+                    connection.Open();
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        // Always call Read before accessing data.
+                        while (reader.Read())
+                        {
+                            toDoTasksDb.Add(new ToDoTask() { Id = reader.GetInt32(0), Name = reader.GetString(1), Description = reader.GetString(2), ToDoDate = reader.GetDateTime(3), Status = reader.GetString(4) == "0" ? false : true, CategoryId = reader.GetInt32(5) });
+                            Debug.WriteLine(reader.GetInt32(0) + ", " + reader.GetString(1) + ", " + reader.GetString(2) + ", " + reader.GetDateTime(3) + ", " + reader.GetString(4) + ", " + reader.GetInt32(5));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return new EnumerableQuery<ToDoTask>(toDoTasksDb);
+
+        }
+
+        private IQueryable<ToDoTask> FindToDoTaskByDate(string date)
+        {
+            if (string.IsNullOrWhiteSpace(date)) return null;
+            IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
+            string queryString = (string.Format(@"SELECT * FROM Task where tododate = TO_DATE('{0}', 'MM/dd/yyyy')", date));
             try
             {
                 using (OracleConnection connection = new OracleConnection(db.connectionString))

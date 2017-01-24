@@ -19,6 +19,10 @@ namespace WebForms_ToDoTasks.Views
         protected void Page_Load(object sender, EventArgs e)
         {
             repo = new ToDoTasksRepository();
+            if (!IsPostBack)
+            {
+                Response.Write("Loaded for first time");
+            }
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
@@ -52,18 +56,53 @@ namespace WebForms_ToDoTasks.Views
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
-        //public IEnumerable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData(int maximumRows, int startRowIndex, out int totalRowCount, string sortByExpression)
         public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
         {
-            ToDoTasksController taskController = new ToDoTasksController(repo);
-            IQueryable<ToDoTask> toDoTasks = taskController.Get();
-            //totalRowCount = toDoTasks.ToList().Count;
-            return toDoTasks;
+            if (string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && string.IsNullOrEmpty(SearchByDateTextBox.Text))
+            {
+                ToDoTasksController taskController = new ToDoTasksController(repo);
+                IQueryable<ToDoTask> toDoTasks = taskController.Get();
+                return toDoTasks;
+            }
+            else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text))
+            {
+                string t = SerchByDescriptionTextBox.Text;
+                ToDoTasksController taskController = new ToDoTasksController(repo);
+                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
+                return toDoTasks;
+            }
+            else if(!string.IsNullOrEmpty(SearchByDateTextBox.Text))
+            {
+                string t = SearchByDateTextBox.Text;
+                ToDoTasksController taskController = new ToDoTasksController(repo);
+                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDate(t);
+                return toDoTasks;
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
-        protected void SerchByDescription_Click(object sender, EventArgs e)
+        protected void SearchByDescription_Click(object sender, EventArgs e)
         {
-            string t = SerchByDescriptionTextBox.Text;
+            //string t = SerchByDescriptionTextBox.Text;
+            //ToDoTasksController taskController = new ToDoTasksController(repo);
+            //IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
+            SearchByDateTextBox.Text = "";
+            GridView1.DataBind();
+        }
+
+        protected void SearchByDate_Click(object sender, EventArgs e)
+        {
+            SerchByDescriptionTextBox.Text = "";
+            GridView1.DataBind();
+        }
+
+        protected void GridView1_DataBound(object sender, EventArgs e)
+        {
+            lblNoResultMessage.Visible = (GridView1.Rows.Count == 0);
         }
     }
 }

@@ -46,5 +46,14 @@ namespace WebForms_ToDoTasks.Controllers
             }
             else return null;
         }
+
+        public IQueryable<ToDoTask> FindToDoTasksByDate(string date)
+        {
+            if (dataDb is ToDoTasksRepository)
+            {
+                return (dataDb as ToDoTasksRepository).GetByDate(date);
+            }
+            else return null;
+        }
     }
 }
