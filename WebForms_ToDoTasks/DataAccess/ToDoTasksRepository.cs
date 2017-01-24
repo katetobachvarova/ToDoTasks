@@ -19,12 +19,11 @@ namespace WebForms_ToDoTasks.DataAccess
 
         public ToDoTask Add(ToDoTask entity)
         {
-            object[] parameters = new object[] { entity.Name, entity.Description, entity.ToDoDate, entity.Status==true ? '1' : '0', entity.CategoryId };
-            InsertToDoTaskData(parameters);
+            InsertToDoTaskData(entity);
             return entity;
         }
 
-        public IEnumerable<ToDoTask> Get()
+        public IQueryable<ToDoTask> Get()
         {
             return ReadToDoTasksData();
         }
@@ -46,15 +45,12 @@ namespace WebForms_ToDoTasks.DataAccess
 
         public ToDoTask Update(ToDoTask entity)
         {
-            //object[] parameters = new object[] { entity.Name, entity.Description, entity.ToDoDate, entity.Status, entity.CategoryId, entity.Id};
-            //object[] parameters = new object[] { entity.Name, entity.Id };
-
             ModifyToDoTaskData(entity);
             return entity;
         }
 
         #region private methods
-        private IEnumerable<ToDoTask> ReadToDoTasksData()
+        private IQueryable<ToDoTask> ReadToDoTasksData()
         {
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
             string queryString = "SELECT * FROM Task";
@@ -80,10 +76,10 @@ namespace WebForms_ToDoTasks.DataAccess
 
                 throw;
             }
-            return toDoTasksDb;
+            return new EnumerableQuery<ToDoTask>(toDoTasksDb);
         }
 
-        private void InsertToDoTaskData(object[] parameters)
+        private void InsertToDoTaskData(ToDoTask entity)
         {
             try
             {
@@ -91,12 +87,12 @@ namespace WebForms_ToDoTasks.DataAccess
                 {
                     connection.Open();
                     OracleCommand insertCommand =
-                        new OracleCommand("INSERT INTO Task (NAME, description, TODODATE, status, categoryid) VALUES (:0, :1, :2, :3, :4)", connection);
-                    insertCommand.Parameters.Add(new OracleParameter("0", parameters[0]));
-                    insertCommand.Parameters.Add(new OracleParameter("1", parameters[1]));
-                    insertCommand.Parameters.Add(new OracleParameter("2", parameters[2]));
-                    insertCommand.Parameters.Add(new OracleParameter("3", parameters[3]));
-                    insertCommand.Parameters.Add(new OracleParameter("4", parameters[4]));
+                        new OracleCommand("INSERT INTO Task (NAME, DESCRIPTION, TODODATE, STATUS, CATEGORYID) VALUES (:0, :1, :2, :3, :4)", connection);
+                    insertCommand.Parameters.Add(new OracleParameter("0", entity.Name));
+                    insertCommand.Parameters.Add(new OracleParameter("1", entity.Description));
+                    insertCommand.Parameters.Add(new OracleParameter("2", entity.ToDoDate));
+                    insertCommand.Parameters.Add(new OracleParameter("3", entity.Status == true ? '1' : '0'));
+                    insertCommand.Parameters.Add(new OracleParameter("4", entity.CategoryId));
                     insertCommand.ExecuteNonQuery();
                     connection.Close();
                 }
@@ -136,14 +132,6 @@ namespace WebForms_ToDoTasks.DataAccess
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
                 {
                     connection.Open();
-                    //OracleCommand updateCommand =
-                    //    new OracleCommand("UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5", connection);
-                    //updateCommand.Parameters.Add(new OracleParameter("0", parameters[0]));
-                    //updateCommand.Parameters.Add(new OracleParameter("1", parameters[1]));
-                    //updateCommand.Parameters.Add(new OracleParameter("2", parameters[2]));
-                    //updateCommand.Parameters.Add(new OracleParameter("3", parameters[3]));
-                    //updateCommand.Parameters.Add(new OracleParameter("4", parameters[4]));
-                    //updateCommand.Parameters.Add(new OracleParameter("5", parameters[5]));
                     OracleCommand updateCommand =
                         new OracleCommand("UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5", connection);
                     updateCommand.Parameters.Add(new OracleParameter("0", entity.Name));
@@ -191,7 +179,6 @@ namespace WebForms_ToDoTasks.DataAccess
                 throw;
             }
             return toDoTasksDb.FirstOrDefault();
-
         }
         #endregion
 

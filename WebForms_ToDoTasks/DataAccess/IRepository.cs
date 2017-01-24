@@ -13,7 +13,7 @@ namespace WebForms_ToDoTasks.DataAccess
         void Remove(T entity);
         void Remove(int id);
         T Update(T entity);
-        IEnumerable<T> Get();
+        IQueryable<T> Get();
         T Get(int id);
     }
 }

@@ -52,10 +52,13 @@ namespace WebForms_ToDoTasks.Views
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
-        public IEnumerable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
+        //public IEnumerable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData(int maximumRows, int startRowIndex, out int totalRowCount, string sortByExpression)
+        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
         {
             ToDoTasksController taskController = new ToDoTasksController(repo);
-            return taskController.Get();
+            IQueryable<ToDoTask> toDoTasks = taskController.Get();
+            //totalRowCount = toDoTasks.ToList().Count;
+            return toDoTasks;
         }
     }
 }

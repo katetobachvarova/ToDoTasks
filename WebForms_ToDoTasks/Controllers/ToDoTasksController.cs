@@ -17,14 +17,13 @@ namespace WebForms_ToDoTasks.Controllers
             dataDb = repository;
         }
 
-        public IEnumerable<ToDoTask> Get()
+        public IQueryable<ToDoTask> Get()
         {
             return dataDb.Get();
         }
 
         public void UpdateToDoTask(ToDoTask entity)
         {
-            //ToDoTask entityToUpdate = dataDb.Get(id);
             dataDb.Update(entity);
         }
 
