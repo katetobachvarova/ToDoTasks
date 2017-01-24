@@ -60,5 +60,10 @@ namespace WebForms_ToDoTasks.Views
             //totalRowCount = toDoTasks.ToList().Count;
             return toDoTasks;
         }
+
+        protected void SerchByDescription_Click(object sender, EventArgs e)
+        {
+            string t = SerchByDescriptionTextBox.Text;
+        }
     }
 }

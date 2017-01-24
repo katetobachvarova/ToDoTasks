@@ -20,7 +20,7 @@ namespace WebForms_ToDoTasks.Models
         public string Description { get; set; }
 
         [Range(typeof(DateTime), "1/1/1900", "1/1/2100", ErrorMessage = "Please provide date after 1/1/1900 and before 1/1/2100 ")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d/M/yyyy HH:mm:ss}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/d/yyyy}")]
         public DateTime ToDoDate { get; set; }
 
         [Display(Name = "Completed")]

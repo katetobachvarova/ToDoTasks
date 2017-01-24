@@ -1,12 +1,16 @@
 ﻿<%--<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ToDoTasks.aspx.cs" Inherits="WebForms_ToDoTasks.Views.ToDoTasks" %>--%>
 <%@ Page Title="ToDoTasks" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ToDoTasks.aspx.cs" Inherits="WebForms_ToDoTasks.Views.ToDoTasks" %>
 
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    
+
     <div>
      <h2>TODOTASKS</h2>
         <p>
-           
+            <asp:Button ID="Button1" runat="server" Text="SerchByDescription" OnClick="SerchByDescription_Click" />  <asp:TextBox ID="SerchByDescriptionTextBox" runat="server"></asp:TextBox>
         </p>
+        
         <asp:ValidationSummary ShowModelStateErrors="true" runat="server" />
         <asp:HyperLink NavigateUrl="~/Views/ToDoTaskAdd" Text="Add New ToDoTask" runat="server" />
         <asp:GridView ID="GridView1" runat="server"  AutoGenerateColumns="False"

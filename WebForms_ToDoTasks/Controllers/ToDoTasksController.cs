@@ -37,5 +37,14 @@ namespace WebForms_ToDoTasks.Controllers
         {
             dataDb.Add(entity);
         }
+
+        public IQueryable<ToDoTask> FindToDoTasksByDescription(string description)
+        {
+            if (dataDb is ToDoTasksRepository)
+            {
+                return (dataDb as ToDoTasksRepository).GetByDescription(description);
+            }
+            else return null;
+        }
     }
 }

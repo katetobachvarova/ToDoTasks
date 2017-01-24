@@ -16,8 +16,16 @@ namespace WebForms_ToDoTasks {
             SetUpValidator(RegularExpressionValidator1);
             SetUpValidator(DynamicValidator1);
             SetUpCustomValidator(DateValidator);
+
+            RangeAttribute ra = (RangeAttribute)Column.Attributes[typeof(RangeAttribute)];
+            if (ra != null)
+            {
+                t1.MinDate = ra.Minimum.ToString();
+                t1.MaxDate = ra.Maximum.ToString();
+            }
+
         }
-    
+
         private void SetUpCustomValidator(CustomValidator validator) {
             if (Column.DataTypeAttribute != null) {
                 switch (Column.DataTypeAttribute.DataType) {
