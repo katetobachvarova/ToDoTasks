@@ -12,5 +12,7 @@ namespace WebForms_ToDoTasks.DataAccess
     {
         IQueryable<ToDoTask> GetByDescription(string description);
         IQueryable<ToDoTask> GetByDate(string date);
+        IQueryable<ToDoTask> GetByDateAndDescription(string date, string description);
+
     }
 }

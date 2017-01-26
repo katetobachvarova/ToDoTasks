@@ -48,5 +48,10 @@ namespace WebForms_ToDoTasks.Controllers
         {
             return dataDb.GetByDate(date);
         }
+
+        public IQueryable<ToDoTask> FindToDoTasksByDateAndDescription(string date, string description)
+        {
+            return dataDb.GetByDateAndDescription(date, description);
+        }
     }
 }

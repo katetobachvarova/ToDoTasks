@@ -60,6 +60,10 @@ namespace WebForms_ToDoTasks.DataAccess
         {
             return FindToDoTaskByDate(date);
         }
+        public IQueryable<ToDoTask> GetByDateAndDescription(string date, string description)
+        {
+            return FindToDoTaskByDateAndDescription(date, description);
+        }
         #endregion
 
         #region private methods
@@ -155,12 +159,18 @@ namespace WebForms_ToDoTasks.DataAccess
         {
             if (string.IsNullOrWhiteSpace(description)) return null;
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
-            string queryString =(string.Format(@"SELECT * FROM Task where DESCRIPTION LIKE '%{0}%'", description));
+            //OracleParameter[] oracleParams = new OracleParameter[]
+            //    {
+                    
+            //        new OracleParameter("0", description)
+            //    };
+            string queryString ="SELECT * FROM Task where DESCRIPTION LIKE ('%' || :0 || '%')";
             try
             {
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
                 {
                     OracleCommand command = new OracleCommand(queryString, connection);
+                    command.Parameters.Add(new OracleParameter("0", description));
                     connection.Open();
                     using (OracleDataReader reader = command.ExecuteReader())
                     {
@@ -256,6 +266,53 @@ namespace WebForms_ToDoTasks.DataAccess
                 throw;
             }
             return new EnumerableQuery<ToDoTask>(toDoTasksDb);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private IQueryable<ToDoTask> FindToDoTaskByDateAndDescription(string date, string description)
+        {
+            if (string.IsNullOrWhiteSpace(date)) return null;
+            IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
+            DateTime validatedDate;
+            string[] formats = new string[] { "dd/MM/yyyy" };
+            var dateTime = DateTime.TryParseExact(date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out validatedDate);
+            if (dateTime)
+            {
+
+
+                OracleParameter[] oracleParams = new OracleParameter[]
+                {
+                    new OracleParameter("0", validatedDate.ToShortDateString()),
+                    new OracleParameter("1", description)
+                };
+                string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy') AND DESCRIPTION LIKE ('%' || :1 || '%')";
+                try
+                {
+                    using (OracleConnection connection = new OracleConnection(db.connectionString))
+                    {
+                        OracleCommand command = new OracleCommand(queryString, connection);
+                        command.Parameters.AddRange(oracleParams);
+                        connection.Open();
+                        using (OracleDataReader reader = command.ExecuteReader())
+                        {
+                            // Always call Read before accessing data.
+                            while (reader.Read())
+                            {
+                                toDoTasksDb.Add(new ToDoTask() { Id = reader.GetInt32(0), Name = reader.GetString(1), Description = reader.GetString(2), ToDoDate = reader.GetDateTime(3), Status = reader.GetString(4) == "0" ? false : true, CategoryId = reader.GetInt32(5) });
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+                return new EnumerableQuery<ToDoTask>(toDoTasksDb);
             }
             else
             {

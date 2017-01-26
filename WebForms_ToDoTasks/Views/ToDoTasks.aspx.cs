@@ -61,22 +61,51 @@ namespace WebForms_ToDoTasks.Views
         //     int startRowIndex
         //     out int totalRowCount
         //     string sortByExpression
+        //public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
+        //{
+        //    if (string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && string.IsNullOrEmpty(SearchByDateTextBox.Text))
+        //    {
+        //        ToDoTasksController taskController = new ToDoTasksController(repo);
+        //        IQueryable<ToDoTask> toDoTasks = taskController.Get();
+        //        return toDoTasks;
+        //    }
+        //    else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text))
+        //    {
+        //        string t = SerchByDescriptionTextBox.Text;
+        //        ToDoTasksController taskController = new ToDoTasksController(repo);
+        //        IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
+        //        return toDoTasks;
+        //    }
+        //    else if(!string.IsNullOrEmpty(SearchByDateTextBox.Text))
+        //    {
+        //        string t = SearchByDateTextBox.Text;
+        //        ToDoTasksController taskController = new ToDoTasksController(repo);
+        //        IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDate(t);
+        //        return toDoTasks;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+            
+        //}
+
         public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
         {
-            if (string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && string.IsNullOrEmpty(SearchByDateTextBox.Text))
+            if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {
                 ToDoTasksController taskController = new ToDoTasksController(repo);
-                IQueryable<ToDoTask> toDoTasks = taskController.Get();
+                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDateAndDescription(SearchByDateTextBox.Text, SerchByDescriptionTextBox.Text);
                 return toDoTasks;
             }
-            else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text))
+            else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrWhiteSpace(SerchByDescriptionTextBox.Text))
             {
                 string t = SerchByDescriptionTextBox.Text;
                 ToDoTasksController taskController = new ToDoTasksController(repo);
                 IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
                 return toDoTasks;
             }
-            else if(!string.IsNullOrEmpty(SearchByDateTextBox.Text))
+            else if (!string.IsNullOrEmpty(SearchByDateTextBox.Text) && !string.IsNullOrWhiteSpace(SearchByDateTextBox.Text))
             {
                 string t = SearchByDateTextBox.Text;
                 ToDoTasksController taskController = new ToDoTasksController(repo);
@@ -85,9 +114,11 @@ namespace WebForms_ToDoTasks.Views
             }
             else
             {
-                return null;
+                ToDoTasksController taskController = new ToDoTasksController(repo);
+                IQueryable<ToDoTask> toDoTasks = taskController.Get();
+                return toDoTasks;
             }
-            
+
         }
 
         protected void SearchByDescription_Click(object sender, EventArgs e)
@@ -119,6 +150,11 @@ namespace WebForms_ToDoTasks.Views
         protected void GridView1_DataBound(object sender, EventArgs e)
         {
             lblNoResultMessage.Visible = (GridView1.Rows.Count == 0);
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+                GridView1.DataBind();
         }
     }
 }
