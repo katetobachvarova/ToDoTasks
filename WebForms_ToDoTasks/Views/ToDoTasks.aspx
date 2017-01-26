@@ -11,8 +11,8 @@
     <div>
      <h2>TODOTASKS</h2>
         <p>
-            <asp:Button ID="SearchByDescription" runat="server" Text="SerchByDescription" OnClick="SearchByDescription_Click" />  <asp:TextBox ID="SerchByDescriptionTextBox" runat="server"></asp:TextBox>
-            <asp:Button ID="SearchByDate" runat="server" Text="SearchByDate" Onclick="SearchByDate_Click"/>  <asp:TextBox ID="SearchByDateTextBox" runat="server"></asp:TextBox>
+            <asp:Label ID="lblDescription" runat="server" Text="Description"> </asp:Label><asp:TextBox ID="SerchByDescriptionTextBox" runat="server"></asp:TextBox>
+            <asp:Label ID="lblDate" runat="server" Text="Date"> </asp:Label><asp:TextBox ID="SearchByDateTextBox" runat="server"></asp:TextBox>
             <asp:Label ID="lblNoResultMessage" runat="server" Text="No Results found" Visible="false"></asp:Label>
             <juice:datepicker runat="server" id="t1" targetcontrolid="SearchByDateTextBox" />
         </p>

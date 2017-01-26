@@ -13,13 +13,13 @@ namespace WebForms_ToDoTasks.Views {
     public partial class ToDoTasks {
         
         /// <summary>
-        /// SearchByDescription control.
+        /// lblDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchByDescription;
+        protected global::System.Web.UI.WebControls.Label lblDescription;
         
         /// <summary>
         /// SerchByDescriptionTextBox control.
@@ -31,13 +31,13 @@ namespace WebForms_ToDoTasks.Views {
         protected global::System.Web.UI.WebControls.TextBox SerchByDescriptionTextBox;
         
         /// <summary>
-        /// SearchByDate control.
+        /// lblDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchByDate;
+        protected global::System.Web.UI.WebControls.Label lblDate;
         
         /// <summary>
         /// SearchByDateTextBox control.

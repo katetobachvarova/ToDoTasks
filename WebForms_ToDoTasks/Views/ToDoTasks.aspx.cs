@@ -24,9 +24,11 @@ namespace WebForms_ToDoTasks.Views
             DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
             repo = new ToDoTasksRepository(db);
             t1.DateFormat = "dd/mm/yy"; ;
+
             //if (!IsPostBack)
             //{
-            //    Response.Write("Loaded for first time");
+            //    SerchByDescriptionTextBox.Text = "";
+            //    SearchByDateTextBox.Text = "";
             //}
         }
 
@@ -91,21 +93,25 @@ namespace WebForms_ToDoTasks.Views
         //}
 
         public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
+
+
+
         {
+
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {
                 ToDoTasksController taskController = new ToDoTasksController(repo);
                 IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDateAndDescription(SearchByDateTextBox.Text, SerchByDescriptionTextBox.Text);
                 return toDoTasks;
             }
-            else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrWhiteSpace(SerchByDescriptionTextBox.Text))
+            else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text))
             {
                 string t = SerchByDescriptionTextBox.Text;
                 ToDoTasksController taskController = new ToDoTasksController(repo);
                 IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
                 return toDoTasks;
             }
-            else if (!string.IsNullOrEmpty(SearchByDateTextBox.Text) && !string.IsNullOrWhiteSpace(SearchByDateTextBox.Text))
+            else if (!string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {
                 string t = SearchByDateTextBox.Text;
                 ToDoTasksController taskController = new ToDoTasksController(repo);
@@ -121,31 +127,31 @@ namespace WebForms_ToDoTasks.Views
 
         }
 
-        protected void SearchByDescription_Click(object sender, EventArgs e)
-        {
-            //string t = SerchByDescriptionTextBox.Text;
-            //ToDoTasksController taskController = new ToDoTasksController(repo);
-            //IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
-            SearchByDateTextBox.Text = "";
-            GridView1.DataBind();
-        }
+        //protected void SearchByDescription_Click(object sender, EventArgs e)
+        //{
+        //    //string t = SerchByDescriptionTextBox.Text;
+        //    //ToDoTasksController taskController = new ToDoTasksController(repo);
+        //    //IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
+        //    SearchByDateTextBox.Text = "";
+        //    GridView1.DataBind();
+        //}
 
-        protected void SearchByDate_Click(object sender, EventArgs e)
-        {
-            SerchByDescriptionTextBox.Text = "";
-            string date = SearchByDateTextBox.Text;
-            DateTime validatedDate;
-            string[] formats = new string[] { "dd/MM/yyyy" };
-            var dateTime = DateTime.TryParseExact(date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out validatedDate);
-            if (dateTime)
-            {
-                GridView1.DataBind();
-            }
-            else
-            {
+        //protected void SearchByDate_Click(object sender, EventArgs e)
+        //{
+        //    SerchByDescriptionTextBox.Text = "";
+        //    string date = SearchByDateTextBox.Text;
+        //    DateTime validatedDate;
+        //    string[] formats = new string[] { "dd/MM/yyyy" };
+        //    var dateTime = DateTime.TryParseExact(date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out validatedDate);
+        //    if (dateTime)
+        //    {
+        //        GridView1.DataBind();
+        //    }
+        //    else
+        //    {
              
-            }
-        }
+        //    }
+        //}
 
         protected void GridView1_DataBound(object sender, EventArgs e)
         {
@@ -154,7 +160,7 @@ namespace WebForms_ToDoTasks.Views
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-                GridView1.DataBind();
+            GridView1.DataBind();
         }
     }
 }
