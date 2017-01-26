@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataAccess;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,9 +11,9 @@ namespace WebForms_ToDoTasks.Controllers
 {
     public class ToDoTasksController 
     {
-       private IRepository<ToDoTask> dataDb;
+       private IToDoTaskRepository dataDb;
 
-        public ToDoTasksController(IRepository<ToDoTask> repository)
+        public ToDoTasksController(IToDoTaskRepository repository)
         {
             dataDb = repository;
         }
@@ -40,20 +41,12 @@ namespace WebForms_ToDoTasks.Controllers
 
         public IQueryable<ToDoTask> FindToDoTasksByDescription(string description)
         {
-            if (dataDb is ToDoTasksRepository)
-            {
-                return (dataDb as ToDoTasksRepository).GetByDescription(description);
-            }
-            else return null;
+            return dataDb.GetByDescription(description);
         }
 
         public IQueryable<ToDoTask> FindToDoTasksByDate(string date)
         {
-            if (dataDb is ToDoTasksRepository)
-            {
-                return (dataDb as ToDoTasksRepository).GetByDate(date);
-            }
-            else return null;
+            return dataDb.GetByDate(date);
         }
     }
 }

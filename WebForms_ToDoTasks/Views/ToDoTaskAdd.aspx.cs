@@ -1,5 +1,7 @@
-﻿using System;
+﻿using DataAccess;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -12,13 +14,12 @@ namespace WebForms_ToDoTasks.Views
 {
     public partial class ToDoTaskAdd : System.Web.UI.Page
     {
-
-        private IRepository<ToDoTask> repo;
+        private IToDoTaskRepository repo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            repo = new ToDoTasksRepository();
-
+            DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
+            repo = new ToDoTasksRepository(db);
         }
 
         public void addToDoTaskForm_InsertItem()
@@ -29,8 +30,6 @@ namespace WebForms_ToDoTasks.Views
             {
                 ToDoTasksController taskController = new ToDoTasksController(repo);
                 taskController.AddToDoTask(item);
-                // Save changes here
-
             }
         }
 

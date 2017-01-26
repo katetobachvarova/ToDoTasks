@@ -523,10 +523,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig2.cs" />
     <Compile Include="Controllers\ToDoTasksController.cs" />
-    <Compile Include="DataAccess\IIdentifiableEntity.cs" />
-    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\IToDoTaskRepository.cs" />
     <Compile Include="DataAccess\ToDoTasksRepository.cs" />
-    <Compile Include="DataAccess\ToDoTasksDbContext.cs" />
     <Compile Include="DynamicData\EntityTemplates\Default.ascx.cs">
       <DependentUpon>Default.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -757,6 +755,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{495910dd-9c5e-45f6-b093-15aec2d2239d}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
