@@ -396,6 +396,7 @@
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Views\ErrorPage.aspx" />
     <Content Include="Views\ToDoTaskAdd.aspx" />
     <Content Include="Views\ToDoTasks.aspx" />
     <Content Include="Web.config" />
@@ -737,6 +738,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\ToDoTaskAdd.aspx.cs">
       <DependentUpon>ToDoTaskAdd.aspx</DependentUpon>
