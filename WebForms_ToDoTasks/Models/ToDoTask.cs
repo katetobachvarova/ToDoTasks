@@ -21,8 +21,6 @@ namespace WebForms_ToDoTasks.Models
         public string Description { get; set; }
 
         [Range(typeof(DateTime), "1/1/1900", "1/1/2100", ErrorMessage = "Please provide date after 1/1/1900 and before 1/1/2100 ")]
-        //[DisplayFormat(ApplyFormatInEditMode = true)]
-         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yy}")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ToDoDate { get; set; }
 
