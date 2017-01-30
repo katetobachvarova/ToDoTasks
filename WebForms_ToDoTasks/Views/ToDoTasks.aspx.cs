@@ -13,6 +13,7 @@ using System.Web.UI.WebControls;
 using WebForms_ToDoTasks.Controllers;
 using WebForms_ToDoTasks.DataAccess;
 using WebForms_ToDoTasks.Models;
+using Resources;
 
 namespace WebForms_ToDoTasks.Views
 {
@@ -23,7 +24,9 @@ namespace WebForms_ToDoTasks.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
+            // DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
+            DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
+
             repo = new ToDoTasksRepository(db);
             taskController = new ToDoTasksController(repo);
             t1.DateFormat = "dd/mm/yy";

@@ -1,0 +1,5 @@
+<connectionStrings>
+  <add  name="UserKateto" 
+	connectionString="DATA SOURCE=localhost:1521/XE;PASSWORD=123;PERSIST SECURITY INFO=True;USER ID=KATETO" 
+	providerName="Oracle.ManagedDataAccess.Client" />
+</connectionStrings>
