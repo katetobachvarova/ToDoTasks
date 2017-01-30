@@ -2,6 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Add task</h2>
+    <asp:ValidationSummary ShowModelStateErrors="true" runat="server" />
     <asp:FormView runat="server" ID="addToDoTaskForm"
     ItemType="WebForms_ToDoTasks.Models.ToDoTask"
     InsertMethod="addToDoTaskForm_InsertItem"
