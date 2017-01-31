@@ -77,13 +77,17 @@ namespace WebForms_ToDoTasks.DataAccess
                 new OracleParameter("3", entity.Status == true ? '1' : '0'),
                 new OracleParameter("4", entity.CategoryId)
             };
-            ExecuteCommand(db.connectionString, "INSERT INTO Task (NAME, DESCRIPTION, TODODATE, STATUS, CATEGORYID) VALUES (:0, :1, :2, :3, :4)", oracleParams);
+            //ExecuteCommand(db.connectionString, "INSERT INTO Task (NAME, DESCRIPTION, TODODATE, STATUS, CATEGORYID) VALUES (:0, :1, :2, :3, :4)", oracleParams);
+            ExecuteCommand(db.connectionString, Resources.ResourceWebApp.InsertToDoTaskDataSqlCmdStr, oracleParams);
+
         }
 
-       
+
         private void DeleteToDoTaskData(int id)
         {
-            ExecuteCommand(db.connectionString, string.Format("DELETE FROM Task WHERE id = '{0}'", id), new OracleParameter[] { });
+            //ExecuteCommand(db.connectionString, "DELETE FROM Task WHERE id = :0", new OracleParameter[] { new OracleParameter() { ParameterName = "0", Value = id } });
+            ExecuteCommand(db.connectionString, Resources.ResourceWebApp.DeleteToDoTaskDataSqlCmdStr, new OracleParameter[] { new OracleParameter() { ParameterName="0", Value=id } });
+
         }
 
         private void ModifyToDoTaskData(ToDoTask entity)
@@ -97,13 +101,16 @@ namespace WebForms_ToDoTasks.DataAccess
                 new OracleParameter("4", entity.CategoryId),
                 new OracleParameter("5", entity.Id)
             };
-            ExecuteCommand(db.connectionString, "UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5", oracleParams);
+            //ExecuteCommand(db.connectionString, "UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5", oracleParams);
+            ExecuteCommand(db.connectionString, Resources.ResourceWebApp.ModifyToDoTaskDataSqlCmdStr, oracleParams);
+
         }
 
         private IQueryable<ToDoTask> ReadToDoTasksData()
         {
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
-            string queryString = "SELECT * FROM Task";
+            //string queryString = "SELECT * FROM Task";
+            string queryString = Resources.ResourceWebApp.ReadToDoTasksDataSqlCmdStr;
             try
             {
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
@@ -131,12 +138,17 @@ namespace WebForms_ToDoTasks.DataAccess
         private ToDoTask FindToDoTaskById(int id)
         {
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
-            string queryString = string.Format("SELECT * FROM Task where id={0}", id);
+            OracleParameter[] oracleParams = new OracleParameter[]
+               {
+                    new OracleParameter("0", id)
+               };
+            string queryString = Resources.ResourceWebApp.FindToDoTaskByIdSqlCmdStr;
             try
             {
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
                 {
                     OracleCommand command = new OracleCommand(queryString, connection);
+                    command.Parameters.Add(oracleParams);
                     connection.Open();
                     using (OracleDataReader reader = command.ExecuteReader())
                     {
@@ -161,10 +173,11 @@ namespace WebForms_ToDoTasks.DataAccess
             IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
             //OracleParameter[] oracleParams = new OracleParameter[]
             //    {
-                    
+
             //        new OracleParameter("0", description)
             //    };
-            string queryString ="SELECT * FROM Task where DESCRIPTION LIKE ('%' || :0 || '%')";
+            //string queryString = "SELECT * FROM Task where DESCRIPTION LIKE ('%' || :0 || '%')";
+            string queryString = Resources.ResourceWebApp.FindToDoTaskByDescriptionSqlCmdStr;
             try
             {
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
@@ -191,40 +204,6 @@ namespace WebForms_ToDoTasks.DataAccess
 
         }
 
-        //private IQueryable<ToDoTask> FindToDoTaskByDate(string date)
-        //{
-        //    if (string.IsNullOrWhiteSpace(date)) return null;
-        //    IList<ToDoTask> toDoTasksDb = new List<ToDoTask>();
-        //    OracleParameter[] oracleParams = new OracleParameter[]
-        //    {
-        //        new OracleParameter("0", date)
-        //    };
-        //    string queryString = (string.Format(@"SELECT * FROM Task where tododate = TO_DATE('{0}', 'dd/MM/yyyy')", date));
-        //    try
-        //    {
-        //        using (OracleConnection connection = new OracleConnection(db.connectionString))
-        //        {
-        //            OracleCommand command = new OracleCommand(queryString, connection);
-        //            connection.Open();
-        //            using (OracleDataReader reader = command.ExecuteReader())
-        //            {
-        //                // Always call Read before accessing data.
-        //                while (reader.Read())
-        //                {
-        //                    toDoTasksDb.Add(new ToDoTask() { Id = reader.GetInt32(0), Name = reader.GetString(1), Description = reader.GetString(2), ToDoDate = reader.GetDateTime(3), Status = reader.GetString(4) == "0" ? false : true, CategoryId = reader.GetInt32(5) });
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw;
-        //    }
-        //    return new EnumerableQuery<ToDoTask>(toDoTasksDb);
-
-        //}
-
         private IQueryable<ToDoTask> FindToDoTaskByDate(string date)
         {
             if (string.IsNullOrWhiteSpace(date)) return null;
@@ -234,38 +213,37 @@ namespace WebForms_ToDoTasks.DataAccess
             var dateTime = DateTime.TryParseExact(date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out validatedDate);
             if (dateTime)
             {
-
-            
-            OracleParameter[] oracleParams = new OracleParameter[]
-            {
-                new OracleParameter("0", validatedDate.ToShortDateString())
-            };
-                string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy')";
+                OracleParameter[] oracleParams = new OracleParameter[]
+                {
+                    new OracleParameter("0", validatedDate.ToShortDateString())
+                };
+                string queryString = Resources.ResourceWebApp.FindToDoTaskByDateSqlCmdStr;
+                //string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy')";
                 //string queryString = "SELECT * FROM Task where tododate = validatedDate";
-               // string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0)";
+                // string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0)";
                 try
                 {
-                using (OracleConnection connection = new OracleConnection(db.connectionString))
-                {
-                    OracleCommand command = new OracleCommand(queryString, connection);
-                    command.Parameters.AddRange(oracleParams);
-                    connection.Open();
-                    using (OracleDataReader reader = command.ExecuteReader())
+                    using (OracleConnection connection = new OracleConnection(db.connectionString))
                     {
-                        // Always call Read before accessing data.
-                        while (reader.Read())
+                        OracleCommand command = new OracleCommand(queryString, connection);
+                        command.Parameters.AddRange(oracleParams);
+                        connection.Open();
+                        using (OracleDataReader reader = command.ExecuteReader())
                         {
-                            toDoTasksDb.Add(new ToDoTask() { Id = reader.GetInt32(0), Name = reader.GetString(1), Description = reader.GetString(2), ToDoDate = reader.GetDateTime(3), Status = reader.GetString(4) == "0" ? false : true, CategoryId = reader.GetInt32(5) });
+                            // Always call Read before accessing data.
+                            while (reader.Read())
+                            {
+                                toDoTasksDb.Add(new ToDoTask() { Id = reader.GetInt32(0), Name = reader.GetString(1), Description = reader.GetString(2), ToDoDate = reader.GetDateTime(3), Status = reader.GetString(4) == "0" ? false : true, CategoryId = reader.GetInt32(5) });
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
-                throw;
-            }
-            return new EnumerableQuery<ToDoTask>(toDoTasksDb);
+                    throw;
+                }
+                return new EnumerableQuery<ToDoTask>(toDoTasksDb);
             }
             else
             {
@@ -289,7 +267,8 @@ namespace WebForms_ToDoTasks.DataAccess
                     new OracleParameter("0", validatedDate.ToShortDateString()),
                     new OracleParameter("1", description)
                 };
-                string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy') AND DESCRIPTION LIKE ('%' || :1 || '%')";
+                //string queryString = "SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy') AND DESCRIPTION LIKE ('%' || :1 || '%')";
+                string queryString = Resources.ResourceWebApp.FindToDoTaskByDateAndDescriptionSqlCmdStr;
                 try
                 {
                     using (OracleConnection connection = new OracleConnection(db.connectionString))

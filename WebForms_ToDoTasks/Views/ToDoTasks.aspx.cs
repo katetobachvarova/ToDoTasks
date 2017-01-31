@@ -24,8 +24,8 @@ namespace WebForms_ToDoTasks.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
-            DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
+            DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
+            //DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
 
             repo = new ToDoTasksRepository(db);
             taskController = new ToDoTasksController(repo);
@@ -33,7 +33,7 @@ namespace WebForms_ToDoTasks.Views
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void GridView1_UpdateItem(int id)
+        public void gvToDoTasks_UpdateItem(int id)
         {
             var item = new WebForms_ToDoTasks.Models.ToDoTask();
             TryUpdateModel(item);
@@ -44,12 +44,12 @@ namespace WebForms_ToDoTasks.Views
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void GridView1_DeleteItem(int id)
+        public void gvToDoTasks_DeleteItem(int id)
         {
             taskController.DeleteToDoTask(id);
         }
 
-        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> GridView1_GetData()
+        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
 
         {
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
@@ -77,23 +77,23 @@ namespace WebForms_ToDoTasks.Views
 
         }
 
-        protected void GridView1_DataBound(object sender, EventArgs e)
+        protected void gvToDoTasks_DataBound(object sender, EventArgs e)
         {
-            lblNoResultMessage.Visible = (GridView1.Rows.Count == 0);
+            lblNoResultMessage.Visible = (gvToDoTasks.Rows.Count == 0);
 
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            GridView1.DataBind();
+            gvToDoTasks.DataBind();
         }
 
-        protected void GridView1_RowDeleted(object sender, GridViewDeletedEventArgs e)
+        protected void gvToDoTasks_RowDeleted(object sender, GridViewDeletedEventArgs e)
         {
-            GridView1.DataBind();
+            gvToDoTasks.DataBind();
         }
 
-        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void gvToDoTasks_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             // if enter key is pressed (keycode==13) call __doPostBack on grid and with
             // 1st param = gvChild.UniqueID (Gridviews UniqueID)
@@ -101,8 +101,8 @@ namespace WebForms_ToDoTasks.Views
             if ((e.Row.RowState == (DataControlRowState.Edit)) ||
                (e.Row.RowState == (DataControlRowState.Edit | DataControlRowState.Alternate)))
             {
-                e.Row.Attributes.Add("onkeypress", "javascript:if (event.keyCode == 13) { __doPostBack('" + GridView1 + "', 'Update$" + e.Row.RowIndex.ToString() + "'); return false; }");
-                //javascript: WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$MainContent$GridView1$ctl02$ctl00", "", true, "", "", false, true))
+                e.Row.Attributes.Add("onkeypress", "javascript:if (event.keyCode == 13) { __doPostBack('" + gvToDoTasks + "', 'Update$" + e.Row.RowIndex.ToString() + "'); return false; }");
+                //javascript: WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$MainContent$gvToDoTasks$ctl02$ctl00", "", true, "", "", false, true))
             }
         }
 

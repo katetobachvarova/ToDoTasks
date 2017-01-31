@@ -117,7 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="connectionStringOracleToDoTasksDb" xml:space="preserve">
-    <value>DATA SOURCE=localhost:1521/XE;PASSWORD=123;PERSIST SECURITY INFO=True;USER ID=KATETO</value>
+  <data name="DeleteToDoTaskDataSqlCmdStr" xml:space="preserve">
+    <value>DELETE FROM Task WHERE id = :0</value>
+  </data>
+  <data name="FindToDoTaskByDateAndDescriptionSqlCmdStr" xml:space="preserve">
+    <value>SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy') AND DESCRIPTION LIKE ('%' || :1 || '%')</value>
+  </data>
+  <data name="FindToDoTaskByDateSqlCmdStr" xml:space="preserve">
+    <value>SELECT * FROM Task where tododate = TO_DATE( :0, 'dd/mm/yyyy')</value>
+  </data>
+  <data name="FindToDoTaskByDescriptionSqlCmdStr" xml:space="preserve">
+    <value>SELECT * FROM Task where DESCRIPTION LIKE ('%' || :0 || '%')</value>
+  </data>
+  <data name="FindToDoTaskByIdSqlCmdStr" xml:space="preserve">
+    <value>SELECT * FROM Task where id=:0</value>
+  </data>
+  <data name="InsertToDoTaskDataSqlCmdStr" xml:space="preserve">
+    <value>INSERT INTO Task (NAME, DESCRIPTION, TODODATE, STATUS, CATEGORYID) VALUES (:0, :1, :2, :3, :4)</value>
+  </data>
+  <data name="ModifyToDoTaskDataSqlCmdStr" xml:space="preserve">
+    <value>UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5</value>
+  </data>
+  <data name="ReadToDoTasksDataSqlCmdStr" xml:space="preserve">
+    <value>SELECT * FROM Task</value>
   </data>
 </root>

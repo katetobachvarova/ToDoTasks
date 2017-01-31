@@ -12,12 +12,12 @@
     <InsertItemTemplate>
         <fieldset>
             <ol>
-                <asp:DynamicEntity runat="server" Mode="Insert" />
+                <asp:DynamicEntity runat="server" Mode="Insert"  />
             </ol>
-            <asp:Button runat="server" Text="Insert" CommandName="Insert" />
-            <asp:Button runat="server" Text="Cancel" CausesValidation="false" OnClick="Cancel_Click" />
+            <asp:Button runat="server" Text="Insert" CommandName="Insert" class="btn btn-default" />
+            <asp:Button runat="server" Text="Cancel" CausesValidation="false" OnClick="Cancel_Click"  class="btn btn-default" />
         </fieldset>
     </InsertItemTemplate>
-</asp:FormView>
+    </asp:FormView>
 </asp:Content>
 

@@ -61,11 +61,74 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DATA SOURCE=localhost:1521/XE;PASSWORD=123;PERSIST SECURITY INFO=True;USER ID=KATETO.
+        ///   Looks up a localized string similar to DELETE FROM Task WHERE id = :0.
         /// </summary>
-        public static string connectionStringOracleToDoTasksDb {
+        public static string DeleteToDoTaskDataSqlCmdStr {
             get {
-                return ResourceManager.GetString("connectionStringOracleToDoTasksDb", resourceCulture);
+                return ResourceManager.GetString("DeleteToDoTaskDataSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Task where tododate = TO_DATE( :0, &apos;dd/mm/yyyy&apos;) AND DESCRIPTION LIKE (&apos;%&apos; || :1 || &apos;%&apos;).
+        /// </summary>
+        public static string FindToDoTaskByDateAndDescriptionSqlCmdStr {
+            get {
+                return ResourceManager.GetString("FindToDoTaskByDateAndDescriptionSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Task where tododate = TO_DATE( :0, &apos;dd/mm/yyyy&apos;).
+        /// </summary>
+        public static string FindToDoTaskByDateSqlCmdStr {
+            get {
+                return ResourceManager.GetString("FindToDoTaskByDateSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Task where DESCRIPTION LIKE (&apos;%&apos; || :0 || &apos;%&apos;).
+        /// </summary>
+        public static string FindToDoTaskByDescriptionSqlCmdStr {
+            get {
+                return ResourceManager.GetString("FindToDoTaskByDescriptionSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Task where id=:0.
+        /// </summary>
+        public static string FindToDoTaskByIdSqlCmdStr {
+            get {
+                return ResourceManager.GetString("FindToDoTaskByIdSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INSERT INTO Task (NAME, DESCRIPTION, TODODATE, STATUS, CATEGORYID) VALUES (:0, :1, :2, :3, :4).
+        /// </summary>
+        public static string InsertToDoTaskDataSqlCmdStr {
+            get {
+                return ResourceManager.GetString("InsertToDoTaskDataSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UPDATE Task set name = :0, description = :1, TODODATE = :2, status = :3, categoryid = :4 where id = :5.
+        /// </summary>
+        public static string ModifyToDoTaskDataSqlCmdStr {
+            get {
+                return ResourceManager.GetString("ModifyToDoTaskDataSqlCmdStr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SELECT * FROM Task.
+        /// </summary>
+        public static string ReadToDoTasksDataSqlCmdStr {
+            get {
+                return ResourceManager.GetString("ReadToDoTasksDataSqlCmdStr", resourceCulture);
             }
         }
     }

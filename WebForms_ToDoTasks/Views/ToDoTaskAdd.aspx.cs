@@ -18,8 +18,8 @@ namespace WebForms_ToDoTasks.Views
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
-            DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
+            DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
+            //DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
             repo = new ToDoTasksRepository(db);
         }
 

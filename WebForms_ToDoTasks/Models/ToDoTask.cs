@@ -22,6 +22,7 @@ namespace WebForms_ToDoTasks.Models
         [StringLength(1000)]
         public string Description { get; set; }
 
+        [Required]
         [Range(typeof(DateTime), "1/1/1900", "1/1/2100", ErrorMessage = "Please provide date after 1/1/1900 and before 1/1/2100 ")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime ToDoDate { get; set; }
@@ -29,6 +30,7 @@ namespace WebForms_ToDoTasks.Models
         [Display(Name = "Completed")]
         public bool Status { get; set; }
 
+        [Required]
         [EnumDataType(typeof(Category)), Display(Name = "Category")]
         public int CategoryId { get; set; }
     }
