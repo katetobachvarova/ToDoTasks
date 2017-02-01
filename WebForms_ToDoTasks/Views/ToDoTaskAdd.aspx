@@ -11,9 +11,6 @@
     OnItemInserted="addToDoTaskForm_ItemInserted">
     <InsertItemTemplate>
         <fieldset>
-            <%--<ol style="padding:0">
-                <asp:DynamicEntity runat="server" Mode="Insert"  />
-            </ol>--%>
             <div id="oladdtask">
                 <asp:DynamicEntity runat="server" Mode="Insert" />
             </div>

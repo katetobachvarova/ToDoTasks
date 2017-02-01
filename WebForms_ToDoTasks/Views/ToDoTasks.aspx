@@ -18,7 +18,7 @@
             <juice:datepicker runat="server" id="t1" targetcontrolid="SearchByDateTextBox"/>
         </p>
         <p>
-            <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click"   CssClass="btn-default" />
+            <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click"   CssClass="btn btn-default" />
         </p>
         <asp:ValidationSummary ShowModelStateErrors="true" runat="server" />
         <h1></h1>
@@ -32,20 +32,21 @@
             AllowSorting="true" AllowPaging="true" PageSize="5" OnDataBound="gvToDoTasks_DataBound"
             OnRowDataBound="gvToDoTasks_RowDataBound"
             OnRowDeleted="gvToDoTasks_RowDeleted">
-            <%--<Columns>
-                <%--<asp:BoundField DataField="ID" HeaderText="ID" ReadOnly="True" SortExpression="ID"></asp:BoundField>
-                <asp:BoundField DataField="NAME" HeaderText="NAME" SortExpression="NAME"></asp:BoundField>
-                <asp:BoundField DataField="DESCRIPTION" HeaderText="DESCRIPTION" SortExpression="DESCRIPTION"></asp:BoundField>
-                <asp:BoundField DataField="TODODATE" HeaderText="TODODATE" SortExpression="TODODATE"></asp:BoundField>
-                <asp:BoundField DataField="STATUS" HeaderText="Completed" SortExpression="STATUS"></asp:BoundField>
-                <asp:BoundField DataField="CATEGORYID" HeaderText="CATEGORYID" SortExpression="CATEGORYID"></asp:BoundField>
-            </Columns>--%>
             <Columns>
                 <asp:DynamicField DataField="NAME" HeaderText="NAME"  />
                 <asp:DynamicField DataField="DESCRIPTION" HeaderText="DESCRIPTION" />
                 <asp:DynamicField DataField="TODODATE" HeaderText="To Do Date" />
                 <asp:DynamicField DataField="STATUS" HeaderText="Completed" />
                 <asp:DynamicField DataField="CATEGORYID" HeaderText="CATEGORY"  />
+                <%--<asp:BoundField DataField="NAME" HeaderText="NAME" SortExpression="NAME"></asp:BoundField>--%>
+                <%--<asp:TemplateField HeaderText="test">
+                    <asp:ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Item.Name %>' />
+                    </asp:ItemTemplate>
+                    <asp:EditItemTemplate>
+                        <asp:TextBox  runat="server" Text='<%# BindItem.Name %>'/>
+                        </asp:EditItemTemplate>
+                    </asp:TemplateField>--%>
             </Columns>
             <EditRowStyle BackColor="#FF9966" />
             <SelectedRowStyle BackColor="LightCyan"
