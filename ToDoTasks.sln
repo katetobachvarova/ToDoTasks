@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{0D19888D-E0CC-487E-A20F-015783B8F1CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TDTWebApi", "TDTWebApi\TDTWebApi.csproj", "{659568BE-9CE5-4C9E-8C3C-B2D940153819}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0D19888D-E0CC-487E-A20F-015783B8F1CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D19888D-E0CC-487E-A20F-015783B8F1CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D19888D-E0CC-487E-A20F-015783B8F1CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{659568BE-9CE5-4C9E-8C3C-B2D940153819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{659568BE-9CE5-4C9E-8C3C-B2D940153819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{659568BE-9CE5-4C9E-8C3C-B2D940153819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{659568BE-9CE5-4C9E-8C3C-B2D940153819}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

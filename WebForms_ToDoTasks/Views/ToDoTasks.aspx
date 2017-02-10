@@ -4,9 +4,37 @@
 <%@ Register Src="~/DynamicData/FieldTemplates/DateTime_Edit.ascx" TagPrefix="uc1" TagName="DateTime_Edit" %>
 
 
-
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div>
+    <script src="../Scripts/jquery-3.1.1.min.js"></script> 
+    <script type="text/javascript">
+    function getProducts() {
+        $.getJSON("http://localhost:55404/api/tdt",
+            function (data) {
+                alert(data);
+                $('#products').empty(); // Clear the table body.
+
+                // Loop through the list of products.
+                $.each(data, function (key, val) {
+                    // Add a table row for the product.
+                    var row = '<td>' + val.Name + '</td><td>' + val.Description + '</td>';
+                    $('<tr/>', { text: row })  // Append the name.
+                        .appendTo($('#products'));
+                });
+            });
+        }
+
+        $(document).ready(getProducts);
+</script>
+<div>
+    <h2>Products</h2>
+    <table>
+    <thead>
+        <tr><th>Name</th><th>Price</th></tr>
+    </thead>
+    <tbody id="products">
+    </tbody>
+    </table>
+
      <h2>
          <asp:Label ID="Label1" runat="server" Text="TODOTASKS"  ForeColor="#428bca"></asp:Label>
      </h2>
