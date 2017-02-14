@@ -14,6 +14,11 @@ using WebForms_ToDoTasks.Controllers;
 using WebForms_ToDoTasks.DataAccess;
 using WebForms_ToDoTasks.Models;
 using Resources;
+using System.Net.Http;
+using System.Net;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace WebForms_ToDoTasks.Views
 {
@@ -21,8 +26,9 @@ namespace WebForms_ToDoTasks.Views
     {
         private IToDoTaskRepository repo;
         private ToDoTasksController taskController;
+        private HttpClient client;
 
-        protected void Page_Load(object sender, EventArgs e)
+        protected  void Page_Load(object sender, EventArgs e)
         {
             DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
             //DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
@@ -30,26 +36,37 @@ namespace WebForms_ToDoTasks.Views
             repo = new ToDoTasksRepository(db);
             taskController = new ToDoTasksController(repo);
             t1.DateFormat = "dd/mm/yy";
+            client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:55404/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            
         }
 
+
         // The id parameter name should match the DataKeyNames value set on the control
-        public void gvToDoTasks_UpdateItem(int id)
+        public async Task<HttpStatusCode> gvToDoTasks_UpdateItem(int id)
         {
             var item = new WebForms_ToDoTasks.Models.ToDoTask();
             TryUpdateModel(item);
             if (ModelState.IsValid)
             {
-                taskController.UpdateToDoTask(item);
+                //taskController.UpdateToDoTask(item);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"api/tdt/{item.Id}", item);
+                return response.StatusCode;
             }
+            return HttpStatusCode.BadRequest;
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public void gvToDoTasks_DeleteItem(int id)
+        public async void gvToDoTasks_DeleteItem(int id)
         {
-            taskController.DeleteToDoTask(id);
+            // taskController.DeleteToDoTask(id);
+            await client.DeleteAsync($"api/tdt/{id}");
         }
 
-        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
+        public  async IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
+        //public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
 
         {
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
@@ -71,10 +88,28 @@ namespace WebForms_ToDoTasks.Views
             }
             else
             {
-                IQueryable<ToDoTask> toDoTasks = taskController.Get();
-                return toDoTasks;
+                //IQueryable<ToDoTask> toDoTasks = taskController.Get();
+                //return toDoTasks;
+                ToDoTask[] allT = await GetAllTasks();
+                IQueryable<ToDoTask> allTasks = allT.AsQueryable();
+                return allTasks;
             }
 
+        }
+
+        private async Task<ToDoTask[]> GetAllTasks()
+        {
+            ToDoTask[] toDoTasks = null;
+            HttpResponseMessage response = await client.GetAsync("api/tdt");
+            //Response.ContentType = "application/json";
+            if (response.IsSuccessStatusCode)
+            {
+                var msg = response.Content.ReadAsStringAsync().Result;
+                toDoTasks = response.Content.ReadAsAsync<ToDoTask[]>().Result;
+                //toDoTasks = JsonConvert.DeserializeObject<ToDoTask[]>(msg);
+
+            }
+            return toDoTasks;
         }
 
         protected void gvToDoTasks_DataBound(object sender, EventArgs e)
@@ -106,5 +141,40 @@ namespace WebForms_ToDoTasks.Views
             }
         }
 
+
+        async Task<HttpStatusCode> DeleteProductAsync(string id)
+        {
+            HttpResponseMessage response = await client.DeleteAsync($"api/tdt/{id}");
+            return response.StatusCode;
+        }
+
+        protected async void TestDeleteClick(object sender, EventArgs e)
+        {
+             await DeleteProductAsync("68");
+        }
+
+        protected async void TestUpdateClick(object sender, EventArgs e)
+        {
+            ToDoTask taskToUpdate = repo.Get(81);
+            taskToUpdate.Description = "бг web api test";
+            await UpdateProductAsync(taskToUpdate);
+        }
+        async Task<HttpStatusCode> UpdateProductAsync(ToDoTask product)
+        {
+            HttpResponseMessage response = await client.PutAsJsonAsync($"api/tdt/{product.Id}", product);
+            return response.StatusCode;
+        }
+
+        protected async void TestCreateClick(object sender, EventArgs e)
+        {
+            //ToDoTask newtask = new ToDoTask() { Name = "тест", Description = "test again web api", CategoryId = 2, Status = true, ToDoDate = DateTime.Now };
+            //await CreateProductAsync(newtask);
+            var allTasks = await GetAllTasks();
+        }
+        async Task<HttpStatusCode> CreateProductAsync(ToDoTask task)
+        {
+            HttpResponseMessage response = await client.PostAsJsonAsync("api/tdt", task);
+            return response.StatusCode;
+        }
     }
 }

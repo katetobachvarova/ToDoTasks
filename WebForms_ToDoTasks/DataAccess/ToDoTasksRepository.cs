@@ -148,7 +148,7 @@ namespace WebForms_ToDoTasks.DataAccess
                 using (OracleConnection connection = new OracleConnection(db.connectionString))
                 {
                     OracleCommand command = new OracleCommand(queryString, connection);
-                    command.Parameters.Add(oracleParams);
+                    command.Parameters.Add(oracleParams[0]);
                     connection.Open();
                     using (OracleDataReader reader = command.ExecuteReader())
                     {

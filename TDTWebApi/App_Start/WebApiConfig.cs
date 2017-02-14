@@ -17,6 +17,9 @@ namespace TDTWebApi
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
+            // New code
+            config.EnableCors();
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
