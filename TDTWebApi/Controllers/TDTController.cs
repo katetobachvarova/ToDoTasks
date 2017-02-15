@@ -1,17 +1,11 @@
 ﻿using DataAccess;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.ServiceModel.Web;
-using System.Text;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using WebForms_ToDoTasks.DataAccess;
-using WebForms_ToDoTasks.Models;
+using TDTModels;
 
 namespace TDTWebApi.Controllers
 {

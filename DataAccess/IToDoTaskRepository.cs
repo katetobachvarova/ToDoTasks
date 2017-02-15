@@ -1,12 +1,7 @@
-﻿using DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebForms_ToDoTasks.Models;
+﻿using System.Linq;
+using TDTModels;
 
-namespace WebForms_ToDoTasks.DataAccess
+namespace DataAccess
 {
     public interface IToDoTaskRepository : IRepository<ToDoTask>
     {

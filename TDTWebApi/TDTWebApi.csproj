@@ -335,9 +335,9 @@
       <Project>{0d19888d-e0cc-487e-a20f-015783b8f1cd}</Project>
       <Name>Resources</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebForms_ToDoTasks\WebForms_ToDoTasks.csproj">
-      <Project>{7a075de5-0e5f-4f89-8bec-f291cf1b1a14}</Project>
-      <Name>WebForms_ToDoTasks</Name>
+    <ProjectReference Include="..\TDTModels\TDTModels.csproj">
+      <Project>{41be43dd-626b-444a-b8ce-988385441d57}</Project>
+      <Name>TDTModels</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

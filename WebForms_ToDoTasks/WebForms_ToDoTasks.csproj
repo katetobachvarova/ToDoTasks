@@ -529,8 +529,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig2.cs" />
     <Compile Include="Controllers\ToDoTasksController.cs" />
-    <Compile Include="DataAccess\IToDoTaskRepository.cs" />
-    <Compile Include="DataAccess\ToDoTasksRepository.cs" />
     <Compile Include="DynamicData\EntityTemplates\Default.ascx.cs">
       <DependentUpon>Default.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -692,7 +690,6 @@
     <Compile Include="DynamicData\FieldTemplates\Url_Edit.ascx.designer.cs">
       <DependentUpon>Url_Edit.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToDoTask.cs" />
     <Compile Include="Views\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -777,6 +774,10 @@
     <ProjectReference Include="..\Resources\Resources.csproj">
       <Project>{0d19888d-e0cc-487e-a20f-015783b8f1cd}</Project>
       <Name>Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TDTModels\TDTModels.csproj">
+      <Project>{41be43dd-626b-444a-b8ce-988385441d57}</Project>
+      <Name>TDTModels</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

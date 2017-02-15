@@ -23,7 +23,7 @@
         <h1></h1>
         <asp:HyperLink NavigateUrl="~/Views/ToDoTaskAdd" Text="Add New ToDoTask" runat="server" />
         <asp:GridView ID="gvToDoTasks" runat="server" AutoGenerateColumns="False" CssClass="table table-striped"
-            ItemType="WebForms_ToDoTasks.Models.ToDoTask" DataKeyNames="Id"
+            ItemType="TDTModels.ToDoTask" DataKeyNames="Id"
             UpdateMethod="gvToDoTasks_UpdateItem"
             DeleteMethod="gvToDoTasks_DeleteItem"
             SelectMethod="gvToDoTasks_GetData"

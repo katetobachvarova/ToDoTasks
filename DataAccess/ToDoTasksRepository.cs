@@ -1,15 +1,11 @@
-﻿using DataAccess;
-using Oracle.ManagedDataAccess.Client;
+﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Web;
-using WebForms_ToDoTasks.Models;
+using TDTModels;
 
-namespace WebForms_ToDoTasks.DataAccess
+namespace DataAccess
 {
     public class ToDoTasksRepository : RepositoryBase<ToDoTask>, IToDoTaskRepository
     {

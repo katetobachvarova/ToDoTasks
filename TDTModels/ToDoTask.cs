@@ -1,12 +1,7 @@
-﻿using DataAccess;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using WebForms_ToDoTasks.DataAccess;
 
-namespace WebForms_ToDoTasks.Models
+namespace TDTModels
 {
     public class ToDoTask : IIdentifiableEntity
     {

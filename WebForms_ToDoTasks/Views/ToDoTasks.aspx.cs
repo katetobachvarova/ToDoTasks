@@ -11,7 +11,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebForms_ToDoTasks.Controllers;
-using WebForms_ToDoTasks.DataAccess;
 using WebForms_ToDoTasks.Models;
 using Resources;
 using System.Net.Http;
@@ -20,6 +19,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Text;
+using TDTModels;
 
 namespace WebForms_ToDoTasks.Views
 {
@@ -45,7 +45,7 @@ namespace WebForms_ToDoTasks.Views
 
         public void gvToDoTasks_UpdateItem(int id)
         {
-            var item = new WebForms_ToDoTasks.Models.ToDoTask();
+            var item = new ToDoTask();
             TryUpdateModel(item);
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace WebForms_ToDoTasks.Views
             }
         }
 
-        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
+        public IQueryable<ToDoTask> gvToDoTasks_GetData()
         {
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {

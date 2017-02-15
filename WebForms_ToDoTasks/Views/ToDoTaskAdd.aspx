@@ -4,7 +4,7 @@
     <h2>Add task</h2>
     <asp:ValidationSummary ShowModelStateErrors="true" runat="server" />
     <asp:FormView runat="server" ID="addToDoTaskForm"
-    ItemType="WebForms_ToDoTasks.Models.ToDoTask"
+    ItemType="TDTModels.ToDoTask"
     InsertMethod="addToDoTaskForm_InsertItem"
     DefaultMode="Insert"
     RenderOuterTable="false" 

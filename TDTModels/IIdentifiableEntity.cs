@@ -1,4 +1,4 @@
-﻿namespace DataAccess
+﻿namespace TDTModels
 {
     public interface IIdentifiableEntity
     {

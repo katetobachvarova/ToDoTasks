@@ -14,8 +14,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebForms_ToDoTasks.Controllers;
-using WebForms_ToDoTasks.DataAccess;
 using WebForms_ToDoTasks.Models;
+using TDTModels;
 
 namespace WebForms_ToDoTasks.Views
 {
@@ -41,7 +41,7 @@ namespace WebForms_ToDoTasks.Views
         {
             // Create string to hold JSON response
             string jsonResponse = string.Empty;
-            var item = new WebForms_ToDoTasks.Models.ToDoTask();
+            var item = new ToDoTask();
             TryUpdateModel(item);
             if (ModelState.IsValid)
             {

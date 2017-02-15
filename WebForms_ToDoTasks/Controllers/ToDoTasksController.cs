@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebForms_ToDoTasks.DataAccess;
-using WebForms_ToDoTasks.Models;
+using TDTModels;
 
 namespace WebForms_ToDoTasks.Controllers
 {
