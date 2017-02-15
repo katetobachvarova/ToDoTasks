@@ -27,7 +27,6 @@ namespace WebForms_ToDoTasks.Views
     {
         private IToDoTaskRepository repo;
         private ToDoTasksController taskController;
-        private HttpClient client;
         private WebClient webClient;
 
         protected  void Page_Load(object sender, EventArgs e)
@@ -39,8 +38,6 @@ namespace WebForms_ToDoTasks.Views
             taskController = new ToDoTasksController(repo);
             t1.DateFormat = "dd/mm/yy";
             webClient = new WebClient();
-            client = new HttpClient(); 
-            RegisterAsyncTask(new PageAsyncTask(GetAllTasksAsync));
         }
 
         public void gvToDoTasks_UpdateItem(int id)
@@ -137,26 +134,6 @@ namespace WebForms_ToDoTasks.Views
                 );
             }
         }
-
-        #region async grid view
-        //Test for async gridview
-        private async Task<IEnumerable<ToDoTask>> GetAllAsync()
-        {
-            IEnumerable<ToDoTask> tasks = Enumerable.Empty<ToDoTask>();
-            HttpResponseMessage response = await client.GetAsync("http://localhost:55404/api/tdt");
-            if (response.IsSuccessStatusCode)
-            {
-                tasks = await response.Content.ReadAsAsync<List<ToDoTask>>();
-            }
-            return tasks;
-            
-        }
-        private async Task GetAllTasksAsync()
-        {
-            gvAsync.DataSource = await GetAllAsync();
-            gvAsync.DataBind();
-        }
-        #endregion
 
         protected void gvToDoTasks_DataBound(object sender, EventArgs e)
         {

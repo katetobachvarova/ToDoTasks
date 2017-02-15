@@ -54,6 +54,5 @@
                 ForeColor="DarkBlue"
                 Font-Bold="true" />  
         </asp:GridView>
-    <asp:GridView ID="gvAsync" runat="server"></asp:GridView>
     </div>
 </asp:Content>

@@ -22,7 +22,6 @@ namespace WebForms_ToDoTasks.Views
     public partial class ToDoTaskAdd : System.Web.UI.Page
     {
         private IToDoTaskRepository repo;
-        private HttpClient client;
         private WebClient webClient;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -30,11 +29,7 @@ namespace WebForms_ToDoTasks.Views
             DbContext db = new DbContext(ConfigurationManager.ConnectionStrings["UserKateto"].ConnectionString);
             //DbContext db = new DbContext(Resources.ResourceWebApp.connectionStringOracleToDoTasksDb);
             repo = new ToDoTasksRepository(db);
-            client = new HttpClient();
             webClient = new WebClient();
-            client.BaseAddress = new Uri("http://localhost:55404/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public string addToDoTaskForm_InsertItem()
@@ -55,22 +50,6 @@ namespace WebForms_ToDoTasks.Views
             }
             return jsonResponse;
         }
-
-        //Async version
-        //public async Task<HttpStatusCode> addToDoTaskForm_InsertItem()
-        //{
-        //    var item = new WebForms_ToDoTasks.Models.ToDoTask();
-        //    TryUpdateModel(item);
-        //    if (ModelState.IsValid)
-        //    {
-        //        //ToDoTasksController taskController = new ToDoTasksController(repo);
-        //        ///taskController.AddToDoTask(item);
-        //        HttpResponseMessage response = await client.PostAsJsonAsync("api/tdt", item);
-        //        return response.StatusCode;
-
-        //    }
-        //    return HttpStatusCode.BadRequest;
-        //}
 
         protected void addToDoTaskForm_ItemInserted(object sender, FormViewInsertedEventArgs e)
         {
