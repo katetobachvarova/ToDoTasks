@@ -32,12 +32,34 @@ namespace TDTWebApi.Controllers
         }
 
         // GET: api/TDT
+        [HttpGet]
         public IEnumerable<ToDoTask> Get()
         {
             return dataDb.Get().ToArray();
         }
 
-        // GET: api/TDT/5 http://localhost:55404/api/tdt/67
+        // GET: api/TDT
+        [HttpGet]
+        public IEnumerable<ToDoTask> GetByDescription(string description)
+        {
+            return dataDb.GetByDescription(description).ToArray();
+        }
+
+        // GET: api/TDT
+        [HttpGet]
+        public IEnumerable<ToDoTask> GetByDate(string date)
+        {
+            return dataDb.GetByDate(date).ToArray();
+        }
+
+        // GET: api/TDT
+        [HttpGet]
+        public IEnumerable<ToDoTask> GetByDateAndDescription(string date, string description)
+        {
+            return dataDb.GetByDateAndDescription(date, description).ToArray();
+        }
+
+        // GET: api/TDT/5
         public ToDoTask Get(int id)
         {
             return dataDb.Get(id);
@@ -45,6 +67,7 @@ namespace TDTWebApi.Controllers
         }
 
         // POST: api/TDT
+        [HttpPost]
         public void Post([FromBody]JObject valueName)
         {
             ToDoTask taskToAdd = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDoTask>(valueName.ToString());
@@ -52,6 +75,7 @@ namespace TDTWebApi.Controllers
         }
 
         // PUT: api/TDT/5
+        [HttpPut]
         public void Put(int id, [FromBody]JObject valueName)
         {
             ToDoTask taskToUpdate = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDoTask>(valueName.ToString());
@@ -59,7 +83,7 @@ namespace TDTWebApi.Controllers
         }
 
         // DELETE: api/TDT/5 
-        [WebInvoke(Method = "Delete", ResponseFormat = WebMessageFormat.Json)]
+        [HttpDelete]
         public void Delete(int id)
         {
             dataDb.Remove(id);

@@ -38,68 +38,62 @@ namespace WebForms_ToDoTasks.Views
             repo = new ToDoTasksRepository(db);
             taskController = new ToDoTasksController(repo);
             t1.DateFormat = "dd/mm/yy";
-            client = new HttpClient();
             webClient = new WebClient();
-            client.BaseAddress = new Uri("http://localhost:55404/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client = new HttpClient(); 
             RegisterAsyncTask(new PageAsyncTask(GetAllTasksAsync));
         }
 
-
-        // The id parameter name should match the DataKeyNames value set on the control
-        public async Task<HttpStatusCode> gvToDoTasks_UpdateItem(int id)
+        public void gvToDoTasks_UpdateItem(int id)
         {
             var item = new WebForms_ToDoTasks.Models.ToDoTask();
             TryUpdateModel(item);
             if (ModelState.IsValid)
             {
-                //taskController.UpdateToDoTask(item);
-                HttpResponseMessage response = await client.PutAsJsonAsync($"api/tdt/{item.Id}", item);
-                return response.StatusCode;
+                using (webClient)
+                {
+                    var dataString = JsonConvert.SerializeObject(item);
+                    webClient.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                    string finalUrl = $"http://localhost:55404/api/tdt/{id}";
+                    byte[] dataTask = Encoding.UTF8.GetBytes(dataString);
+                    webClient.UploadData(new Uri(finalUrl), "PUT", dataTask);
+                }
             }
-            return HttpStatusCode.BadRequest;
         }
 
-        // The id parameter name should match the DataKeyNames value set on the control
-        //public async void gvToDoTasks_DeleteItem(int id)
         public void gvToDoTasks_DeleteItem(int id)
         {
-            // taskController.DeleteToDoTask(id);
-            //await client.DeleteAsync($"api/tdt/{id}");
-            byte[] dataBytesId = Encoding.UTF8.GetBytes(id.ToString());
-            webClient.UploadData("http://localhost:55404/api/tdt", "Delete", dataBytesId);
+            using (webClient)
+            {
+                string finalUrl = $"http://localhost:55404/api/tdt/{id}";
+                string dataTaskId = "";
+                byte[] dataTask = Encoding.UTF8.GetBytes(dataTaskId);
+                webClient.UploadData(new Uri(finalUrl), "DELETE", dataTask);
+            }
         }
 
-        //public  async IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
         public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
-
         {
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {
-                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDateAndDescription(SearchByDateTextBox.Text, SerchByDescriptionTextBox.Text);
+                IQueryable<ToDoTask> toDoTasks = GetAllTasksByDateAndDescription(SearchByDateTextBox.Text, SerchByDescriptionTextBox.Text).AsQueryable();
                 return toDoTasks;
             }
             else if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text))
             {
                 string t = SerchByDescriptionTextBox.Text;
-                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDescription(t);
-                return toDoTasks;
+                IQueryable<ToDoTask> allTasks = GetAllTasksByDescription(t).AsQueryable();
+                return allTasks;
             }
             else if (!string.IsNullOrEmpty(SearchByDateTextBox.Text))
             {
                 string t = SearchByDateTextBox.Text;
-                IQueryable<ToDoTask> toDoTasks = taskController.FindToDoTasksByDate(t);
+                IQueryable<ToDoTask> toDoTasks = GetAllTasksByDate(t).AsQueryable();
                 return toDoTasks;
             }
             else
             {
-                //IQueryable<ToDoTask> toDoTasks = taskController.Get();
-                //return toDoTasks;
-                IQueryable<ToDoTask> allTasks = GetAllTasks().AsQueryable();
-                return allTasks;
-
-
+                IQueryable<ToDoTask> toDoTasks = GetAllTasks().AsQueryable();
+                return toDoTasks;
             }
 
         }
@@ -110,6 +104,36 @@ namespace WebForms_ToDoTasks.Views
             {
                 return JsonConvert.DeserializeObject<List<ToDoTask>>(
                     webClient.DownloadString("http://localhost:55404/api/tdt")
+                );
+            }
+        }
+
+        private List<ToDoTask> GetAllTasksByDescription(string description)
+        {
+            using (webClient)
+            {
+                return JsonConvert.DeserializeObject<List<ToDoTask>>(
+                    webClient.DownloadString($"http://localhost:55404/api/tdt/?description={description}")
+                );
+            }
+        }
+
+        private List<ToDoTask> GetAllTasksByDate(string date)
+        {
+            using (webClient)
+            {
+                return JsonConvert.DeserializeObject<List<ToDoTask>>(
+                    webClient.DownloadString($"http://localhost:55404/api/tdt/?date={date}")
+                );
+            }
+        }
+
+        private List<ToDoTask> GetAllTasksByDateAndDescription(string date, string description)
+        {
+            using (webClient)
+            {
+                return JsonConvert.DeserializeObject<List<ToDoTask>>(
+                    webClient.DownloadString($"http://localhost:55404/api/tdt/?date={date}&description={description}")
                 );
             }
         }
