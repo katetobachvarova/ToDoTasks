@@ -19,6 +19,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace WebForms_ToDoTasks.Views
 {
@@ -27,6 +28,7 @@ namespace WebForms_ToDoTasks.Views
         private IToDoTaskRepository repo;
         private ToDoTasksController taskController;
         private HttpClient client;
+        private WebClient webClient;
 
         protected  void Page_Load(object sender, EventArgs e)
         {
@@ -37,10 +39,11 @@ namespace WebForms_ToDoTasks.Views
             taskController = new ToDoTasksController(repo);
             t1.DateFormat = "dd/mm/yy";
             client = new HttpClient();
+            webClient = new WebClient();
             client.BaseAddress = new Uri("http://localhost:55404/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            
+            RegisterAsyncTask(new PageAsyncTask(GetAllTasksAsync));
         }
 
 
@@ -59,14 +62,17 @@ namespace WebForms_ToDoTasks.Views
         }
 
         // The id parameter name should match the DataKeyNames value set on the control
-        public async void gvToDoTasks_DeleteItem(int id)
+        //public async void gvToDoTasks_DeleteItem(int id)
+        public void gvToDoTasks_DeleteItem(int id)
         {
             // taskController.DeleteToDoTask(id);
-            await client.DeleteAsync($"api/tdt/{id}");
+            //await client.DeleteAsync($"api/tdt/{id}");
+            byte[] dataBytesId = Encoding.UTF8.GetBytes(id.ToString());
+            webClient.UploadData("http://localhost:55404/api/tdt", "Delete", dataBytesId);
         }
 
-        public  async IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
-        //public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
+        //public  async IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
+        public IQueryable<WebForms_ToDoTasks.Models.ToDoTask> gvToDoTasks_GetData()
 
         {
             if (!string.IsNullOrEmpty(SerchByDescriptionTextBox.Text) && !string.IsNullOrEmpty(SearchByDateTextBox.Text))
@@ -90,27 +96,43 @@ namespace WebForms_ToDoTasks.Views
             {
                 //IQueryable<ToDoTask> toDoTasks = taskController.Get();
                 //return toDoTasks;
-                ToDoTask[] allT = await GetAllTasks();
-                IQueryable<ToDoTask> allTasks = allT.AsQueryable();
+                IQueryable<ToDoTask> allTasks = GetAllTasks().AsQueryable();
                 return allTasks;
+
+
             }
 
         }
 
-        private async Task<ToDoTask[]> GetAllTasks()
+        private List<ToDoTask> GetAllTasks()
         {
-            ToDoTask[] toDoTasks = null;
-            HttpResponseMessage response = await client.GetAsync("api/tdt");
-            //Response.ContentType = "application/json";
+            using (webClient)
+            {
+                return JsonConvert.DeserializeObject<List<ToDoTask>>(
+                    webClient.DownloadString("http://localhost:55404/api/tdt")
+                );
+            }
+        }
+
+        #region async grid view
+        //Test for async gridview
+        private async Task<IEnumerable<ToDoTask>> GetAllAsync()
+        {
+            IEnumerable<ToDoTask> tasks = Enumerable.Empty<ToDoTask>();
+            HttpResponseMessage response = await client.GetAsync("http://localhost:55404/api/tdt");
             if (response.IsSuccessStatusCode)
             {
-                var msg = response.Content.ReadAsStringAsync().Result;
-                toDoTasks = response.Content.ReadAsAsync<ToDoTask[]>().Result;
-                //toDoTasks = JsonConvert.DeserializeObject<ToDoTask[]>(msg);
-
+                tasks = await response.Content.ReadAsAsync<List<ToDoTask>>();
             }
-            return toDoTasks;
+            return tasks;
+            
         }
+        private async Task GetAllTasksAsync()
+        {
+            gvAsync.DataSource = await GetAllAsync();
+            gvAsync.DataBind();
+        }
+        #endregion
 
         protected void gvToDoTasks_DataBound(object sender, EventArgs e)
         {
@@ -141,40 +163,5 @@ namespace WebForms_ToDoTasks.Views
             }
         }
 
-
-        async Task<HttpStatusCode> DeleteProductAsync(string id)
-        {
-            HttpResponseMessage response = await client.DeleteAsync($"api/tdt/{id}");
-            return response.StatusCode;
-        }
-
-        protected async void TestDeleteClick(object sender, EventArgs e)
-        {
-             await DeleteProductAsync("68");
-        }
-
-        protected async void TestUpdateClick(object sender, EventArgs e)
-        {
-            ToDoTask taskToUpdate = repo.Get(81);
-            taskToUpdate.Description = "бг web api test";
-            await UpdateProductAsync(taskToUpdate);
-        }
-        async Task<HttpStatusCode> UpdateProductAsync(ToDoTask product)
-        {
-            HttpResponseMessage response = await client.PutAsJsonAsync($"api/tdt/{product.Id}", product);
-            return response.StatusCode;
-        }
-
-        protected async void TestCreateClick(object sender, EventArgs e)
-        {
-            //ToDoTask newtask = new ToDoTask() { Name = "тест", Description = "test again web api", CategoryId = 2, Status = true, ToDoDate = DateTime.Now };
-            //await CreateProductAsync(newtask);
-            var allTasks = await GetAllTasks();
-        }
-        async Task<HttpStatusCode> CreateProductAsync(ToDoTask task)
-        {
-            HttpResponseMessage response = await client.PostAsJsonAsync("api/tdt", task);
-            return response.StatusCode;
-        }
     }
 }

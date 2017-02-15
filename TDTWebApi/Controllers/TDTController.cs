@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.ServiceModel.Web;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -58,6 +59,7 @@ namespace TDTWebApi.Controllers
         }
 
         // DELETE: api/TDT/5 
+        [WebInvoke(Method = "Delete", ResponseFormat = WebMessageFormat.Json)]
         public void Delete(int id)
         {
             dataDb.Remove(id);
